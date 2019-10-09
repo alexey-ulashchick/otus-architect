@@ -2,11 +2,6 @@ package com.java.otus.architect.auth;
 
 import javax.validation.Valid;
 
-import com.java.otus.architect.user.SignUpRequest;
-import com.java.otus.architect.user.SignUpResponse;
-import com.java.otus.architect.user.User;
-import com.java.otus.architect.user.UserService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -27,15 +22,10 @@ public class AuthController {
   @Autowired
   private JwtTokenUtil jwtTokenUtil;
 
-  @Autowired
-  private UserService userService;
-
   @PostMapping(path = "/sign-in", consumes = "application/json", produces = "application/json")
   public LoginResponse signIn(@Valid @RequestBody LoginRequest request) throws Exception {
-    authenticate(request.getEmail(), request.getPassword()); //TODO: Catch exceptions normally
-    User user = userService.getByEmail(request.getEmail());
-    String token = jwtTokenUtil.generateToken(user);
-
+    authenticate(request.getEmail(), request.getPassword()); // TODO: Catch exceptions normally
+    String token = jwtTokenUtil.generateToken(request.getEmail());
     return LoginResponse.builder().token(token).build();
   }
 
