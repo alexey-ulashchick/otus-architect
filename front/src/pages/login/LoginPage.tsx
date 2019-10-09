@@ -1,12 +1,10 @@
-import React, { useState, SetStateAction, Dispatch } from 'react';
-import { Box, Button, Form, FormField, Heading } from 'grommet';
+// import React, { useState, SetStateAction, Dispatch } from 'react';
+import React from 'react';
+import { Button, Form, FormField, Heading } from 'grommet';
 import { LoginForm, LoginButton, Header, PageHeader } from './LoginPageStyles';
 
 export const LoginPage: React.FC = () => {
-  const [counter, setNumber]: [number, (Dispatch<SetStateAction<number>>)] = useState<number>(0);
-  const func = () => {
-    alert('Hi');
-  };
+  // const [counter, setNumber]: [number, (Dispatch<SetStateAction<number>>)] = useState<number>(0);
 
   return (
     <div>
