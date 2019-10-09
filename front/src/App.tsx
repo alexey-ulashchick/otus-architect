@@ -1,26 +1,39 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+
+// import './App.css';
+import { LoginPage } from './pages/login/LoginPage';
+import { BrowserRouter, Route } from 'react-router-dom';
+import { Grommet, Box } from 'grommet';
 
 const App: React.FC = () => {
+  const theme = {
+    global: {
+      font: {
+        family: 'Roboto',
+        size: '14px',
+        height: '20px'
+      },
+      colors: {
+        // active: 'red',
+        // brand: 'red',
+        // control: {
+        //   dark: 'yellow',
+        // },
+        // text: {
+        //   dark: 'lightgray'
+        // }
+      }
+    }
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Grommet theme={theme} full={true}>
+      <Box fill={true} background="dark-1">
+        <BrowserRouter>
+          <Route exact path="/" component={LoginPage} />
+        </BrowserRouter>
+      </Box>
+    </Grommet>
   );
-}
+};
 
 export default App;
