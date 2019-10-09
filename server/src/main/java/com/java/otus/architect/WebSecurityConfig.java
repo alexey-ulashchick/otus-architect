@@ -9,8 +9,10 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import com.java.otus.architect.user.UserService;
 // import org.springframework.security.config.http.SessionCreationPolicy;
-// import org.springframework.security.core.userdetails.UserDetailsService;
 // import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 // import org.springframework.security.crypto.password.PasswordEncoder;
 // import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -24,45 +26,44 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   // @Autowired
   // private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-  // @Autowired
-  // private UserDetailsService jwtUserDetailsService;
+  @Autowired
+  private UserService userService;
+
+  @Autowired
+  BCryptPasswordEncoder bCryptPasswordEncoder;
 
   // @Autowired
   // private JwtRequestFilter jwtRequestFilter;
 
   @Autowired
   public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-
     // configure AuthenticationManager so that it knows from where to load
-
     // user for matching credentials
-
     // Use BCryptPasswordEncoder
 
-    // auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
+    auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder);
 
   }
 
-  // @Bean
-  // @Override
-  // public AuthenticationManager authenticationManagerBean() throws Exception {
-  //   return super.authenticationManagerBean();
-
-  // }
+  @Bean
+  @Override
+  public AuthenticationManager authenticationManagerBean() throws Exception {
+    return super.authenticationManagerBean();
+  }
 
   @Override
   protected void configure(HttpSecurity httpSecurity) throws Exception {
-    httpSecurity.csrf().disable()
-        .authorizeRequests().antMatchers("/sign-up").permitAll().
-        anyRequest().authenticated();
-        // .and().
-        // exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
+    httpSecurity.csrf().disable().authorizeRequests().antMatchers("/sign-up").permitAll().antMatchers("/sign-in")
+        .permitAll().anyRequest().authenticated();
+    // .and().
+    // exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
 
-        // .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    // .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
     // Add a filter to validate the tokens with every request
 
-    // httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+    // httpSecurity.addFilterBefore(jwtRequestFilter,
+    // UsernamePasswordAuthenticationFilter.class);
 
   }
 
