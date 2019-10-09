@@ -16,13 +16,11 @@ public class UserController {
   private UserService userService;
 
   @PostMapping(path = "/sign-up", consumes = "application/json", produces = "application/json")
-  public SignUpResponse signUp(@RequestBody SignUpRequest signUpRequest) {
+  public void signUp(@RequestBody SignUpRequest signUpRequest) {
     User user = User.builder().email(signUpRequest.getEmail())
         .passwordHash(bCryptPasswordEncoder.encode(signUpRequest.getPassword())).build();
 
-    int generatedId = userService.createUser(user);
-
-    return SignUpResponse.builder().id(generatedId).build();
+    userService.createUser(user);
   }
 
 }

@@ -9,7 +9,6 @@ import lombok.Setter;
 @Builder
 public class User {
 
-  private Number id;
   private String email;
   private String passwordHash;
 

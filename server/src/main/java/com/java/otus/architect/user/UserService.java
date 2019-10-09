@@ -27,13 +27,12 @@ public class UserService implements UserDetailsService {
   DataSource dataSource;
 
   public int createUser(User user) {
-
     Map<String, Object> parameters = new HashMap<String, Object>();
+
     parameters.put("email", user.getEmail());
     parameters.put("password", user.getPasswordHash());
 
-    return new SimpleJdbcInsert(dataSource).withTableName(UserService.TABLE).usingGeneratedKeyColumns("id")
-        .executeAndReturnKey(parameters).intValue();
+    return new SimpleJdbcInsert(dataSource).withTableName(UserService.TABLE).execute(parameters);
   }
 
   public User getByEmail(String email) {
