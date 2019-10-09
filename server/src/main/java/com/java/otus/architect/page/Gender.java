@@ -1,4 +1,4 @@
-package com.java.otus.architect.user;
+package com.java.otus.architect.page;
 
 public enum Gender {
   MALE, FEMALE,
