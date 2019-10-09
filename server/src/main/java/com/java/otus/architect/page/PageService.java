@@ -1,5 +1,7 @@
 package com.java.otus.architect.page;
 
+import java.util.List;
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ public class PageService {
 
   private final static String INSERT_PAGE = "insert into pages (`email`, `firstName`, `lastName`, `city`, `gender`, `age`) values (?,?,?,?,?,?)";
   private final static String INSERT_USER_AREA_OF_INTEREST = "insert into users_areasOfInterest (`email`, `areaOfInterest`) value (?,?)";
+  private final static String SELECT_PAGES = "select * from pages left join users_areasOfInterest on pages.email = users_areasOfInterest.email";
 
   @Autowired
   JdbcTemplate jdbcTemplate;
@@ -28,7 +31,11 @@ public class PageService {
       addAreasOfInterest(page.getEmail(), areaOfIntrest);
     }
 
-    jdbcTemplate.update(PageService.INSERT_PAGE, args);
+    jdbcTemplate.update(INSERT_PAGE, args);
+  }
+
+  public List<Page> getAll() {
+    return jdbcTemplate.query(SELECT_PAGES, new PageResultExtractor());
   }
 
   private int addAreasOfInterest(String email, String areaOfInterest) {

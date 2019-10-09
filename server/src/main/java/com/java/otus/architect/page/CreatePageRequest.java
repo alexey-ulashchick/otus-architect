@@ -1,5 +1,7 @@
 package com.java.otus.architect.page;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,6 +16,6 @@ public class CreatePageRequest {
   private String city;
   private Gender gender;
   private int age;
-  private String[] areasOfInterest;
+  private List<String> areasOfInterest;
 
 }
