@@ -1,46 +1,41 @@
 import React, { useState, SetStateAction, Dispatch } from 'react';
 import { Button, Form, FormField, Heading } from 'grommet';
-import { LoginForm, LoginButton, Header, PageHeader, Loader, ErrorMessage, accentColor } from './LoginPageStyles';
+import { LoginForm, LoginButton, Header, PageHeader, ErrorMessage } from './LoginPageStyles';
 import { AuthService } from '../../services/AuthService';
-import { delay } from 'rxjs/operators';
-import { ClimbingBoxLoader } from 'react-spinners';
+import { Redirect } from 'react-router';
+import { Loader } from '../../components/Loader';
 
 interface ILoginForm {
   email: string;
   password: string;
 }
 
+const authService = AuthService.getInstance();
+
 export const LoginPage: React.FC = () => {
-  const authService = new AuthService();
   const [isLoading, setLoading]: [boolean, (Dispatch<SetStateAction<boolean>>)] = useState<boolean>(false);
   const [error, setError]: [string, (Dispatch<SetStateAction<string>>)] = useState<string>('');
 
+  if (authService.isAuthorized()) {
+    return <Redirect to={{ pathname: '/' }} />;
+  }
+
   const login = (value: ILoginForm) => {
     setLoading(true);
-    authService
-      .login(value.email, value.password)
-      .pipe(delay(1000))
-      .subscribe(
-        res => {
-          setLoading(false);
-          console.log('Success', res);
-        },
-        (err: Error) => {
-          setLoading(false);
-          setError(err.message);
-        }
-      );
+    authService.login(value.email, value.password).subscribe(
+      () => {
+        setLoading(false);
+      },
+      (err: Error) => {
+        setLoading(false);
+        setError(err.message);
+      }
+    );
   };
 
   return (
     <div>
-      {isLoading ? (
-        <div className={Loader}>
-          <ClimbingBoxLoader css={'z-index: 1;'} color={accentColor.toString()} />
-        </div>
-      ) : (
-        ''
-      )}
+      {isLoading ? <Loader /> : ''}
       <header className={PageHeader}>
         <Heading level="5">Registration</Heading>
         <Button type="button" label="Sign Up" />
@@ -50,7 +45,7 @@ export const LoginPage: React.FC = () => {
           FaceVK
         </Heading>
         {error ? <div className={ErrorMessage}>{error}</div> : ''}
-        <Form onSubmit={(event: any) => login((event as { value: ILoginForm }).value)}>
+        <Form onChange={() => setError('')} onSubmit={(event: any) => login((event as { value: ILoginForm }).value)}>
           <FormField name="email" label="Email" required={true} />
           <FormField name="password" label="Password" type="password" required={true} />
           <Button className={LoginButton} type="submit" primary label="Login" />
