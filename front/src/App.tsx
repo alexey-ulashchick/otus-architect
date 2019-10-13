@@ -1,35 +1,37 @@
 import React from 'react';
 
-// import './App.css';
 import { LoginPage } from './pages/login/LoginPage';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Redirect, RouteProps } from 'react-router-dom';
 import { Grommet, Box } from 'grommet';
+import { HomePage } from './pages/home/HomePage';
+import { AuthService } from './services/AuthService';
+import { SignUpPage } from './pages/signup/SignUpPage';
+
+const authService = AuthService.getInstance();
+
+const PrivateRoute: React.FC<RouteProps> = ({ component, ...rest }: RouteProps) => {
+  const Component = component!;
+
+  return <Route {...rest} render={props => (authService.isAuthorized() ? <Component {...props} /> : <Redirect to={{ pathname: '/login' }} />)} />;
+};
 
 const App: React.FC = () => {
   const theme = {
     global: {
       font: {
         family: 'Roboto',
-        size: '14px',
+        size: '16px',
         height: '20px'
       },
-      colors: {
-        // active: 'red',
-        // brand: 'red',
-        // control: {
-        //   dark: 'yellow',
-        // },
-        // text: {
-        //   dark: 'lightgray'
-        // }
-      }
     }
   };
   return (
     <Grommet theme={theme} full={true}>
       <Box fill={true} background="dark-1">
         <BrowserRouter>
-          <Route exact path="/" component={LoginPage} />
+          <Route exact path="/login" component={LoginPage} />
+          <Route exact path="/sign-up" component={SignUpPage} />
+          <PrivateRoute exact path="/" component={HomePage} />
         </BrowserRouter>
       </Box>
     </Grommet>
