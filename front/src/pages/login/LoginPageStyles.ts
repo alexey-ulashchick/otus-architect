@@ -29,7 +29,8 @@ export const FormStyle = style(TILE, {
   display: 'flex',
   flexDirection: 'column',
   padding: '2em',
-  boxSizing: 'border-box'
+  boxSizing: 'border-box',
+  position: 'relative',
 });
 
 export const CenteredButton = style({

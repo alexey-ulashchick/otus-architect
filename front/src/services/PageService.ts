@@ -24,4 +24,16 @@ export class PageService {
       })
     );
   }
+
+  getPage$(email: string): Observable<Page> {
+    return this.httpClient.get(`http://localhost:8083/pages/${email}/`, { headers: authService.getAuthHeaders() }).pipe(
+      map((res: any) => {
+        if (res.error) {
+          throw new Error(res.message);
+        }
+
+        return new Page(res.email, res.firstName, res.lastName, res.city, res.gender, res.age, res.areasOfInterest);
+      })
+    );
+  }
 }

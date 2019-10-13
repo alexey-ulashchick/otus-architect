@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @CrossOrigin
@@ -30,6 +31,11 @@ public class PageController {
   @GetMapping(path = "/pages")
   public List<Page> getPages() {
     return pageService.getAll();
+  }
+
+  @GetMapping(path = "/pages/{email}")
+  public Page getPage(@PathVariable String email) {
+    return pageService.getByEmail(email);
   }
 
 }
