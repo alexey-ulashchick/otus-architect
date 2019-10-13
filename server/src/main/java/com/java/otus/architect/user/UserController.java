@@ -18,11 +18,12 @@ public class UserController {
   private UserService userService;
 
   @PostMapping(path = "/sign-up", consumes = "application/json", produces = "application/json")
-  public void signUp(@RequestBody SignUpRequest signUpRequest) {
+  public SignUpResponse signUp(@RequestBody SignUpRequest signUpRequest) {
     User user = User.builder().email(signUpRequest.getEmail())
         .passwordHash(bCryptPasswordEncoder.encode(signUpRequest.getPassword())).build();
 
     userService.createUser(user);
+    return SignUpResponse.builder().email(user.getEmail()).build();
   }
 
 }

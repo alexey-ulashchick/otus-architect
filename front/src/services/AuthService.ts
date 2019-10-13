@@ -8,7 +8,7 @@ interface RestError {
   error: string;
 }
 
-let instance: AuthService|null = null;
+let instance: AuthService | null = null;
 
 export class AuthService {
   private httpClient: RxJSHttpClient;
@@ -47,13 +47,27 @@ export class AuthService {
     );
   }
 
+  public signUp(email: string, password: string): Observable<void> {
+    return this.httpClient.post('http://localhost:8083/sign-up', { body: { email, password } }).pipe(
+      map((res: { email: string } & RestError) => {
+        if (res.error) {
+          throw new Error(res.message);
+        }
+      })
+    );
+  }
+
   public isAuthorized(): boolean {
     if (!this.getToken()) {
       return false;
     }
 
-    const { exp }: { exp: number } = JSON.parse(atob(this.getToken()!.split('.')[1]));
-    return moment(exp * 1000).isAfter(moment());
+    try {
+      const { exp }: { exp: number } = JSON.parse(atob(this.getToken()!.split('.')[1]));
+      return moment(exp * 1000).isAfter(moment());
+    } catch (e) {
+      return false;
+    }
   }
 
   public getAuthHeaders(): { ['Authorization']: string } {

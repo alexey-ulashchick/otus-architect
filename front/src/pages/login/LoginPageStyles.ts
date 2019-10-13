@@ -23,7 +23,7 @@ export const Header = style({
   marginBottom: '2em'
 });
 
-export const LoginForm = style(TILE, {
+export const FormStyle = style(TILE, {
   width: WIDTH,
   margin: '25vh auto 0',
   display: 'flex',
@@ -32,7 +32,7 @@ export const LoginForm = style(TILE, {
   boxSizing: 'border-box'
 });
 
-export const LoginButton = style({
+export const CenteredButton = style({
   margin: '2em auto 0',
   display: 'block'
 });
@@ -59,4 +59,6 @@ export const ErrorMessage = style({
   fontSize: '1.286em', //18px
   textAlign: 'center',
   margin: '1em auto 2em',
+  width: '100%',
+  overflow: 'hidden'
 });

@@ -1,8 +1,7 @@
 import { Page } from '../models/Page';
 import React from 'react';
 import { style } from 'typestyle';
-import { Anchor } from 'grommet';
-import { accentColor, FORM_BACKGROUND } from '../pages/login/LoginPageStyles';
+import { FORM_BACKGROUND } from '../pages/login/LoginPageStyles';
 
 const PageItemStyle = style({
   display: 'flex',

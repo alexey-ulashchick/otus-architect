@@ -1,9 +1,10 @@
 import React, { useState, SetStateAction, Dispatch } from 'react';
 import { Button, Form, FormField, Heading } from 'grommet';
-import { LoginForm, LoginButton, Header, PageHeader, ErrorMessage } from './LoginPageStyles';
+import { FormStyle, CenteredButton, Header, PageHeader, ErrorMessage } from './LoginPageStyles';
 import { AuthService } from '../../services/AuthService';
 import { Redirect } from 'react-router';
 import { Loader } from '../../components/Loader';
+import { Link } from 'react-router-dom';
 
 interface ILoginForm {
   email: string;
@@ -38,9 +39,11 @@ export const LoginPage: React.FC = () => {
       {isLoading ? <Loader /> : ''}
       <header className={PageHeader}>
         <Heading level="5">Registration</Heading>
-        <Button type="button" label="Sign Up" />
+        <Link to="/sign-up">
+          <Button type="button" label="Sign Up"/>
+        </Link>
       </header>
-      <div className={LoginForm}>
+      <div className={FormStyle}>
         <Heading className={Header} level="3">
           FaceVK
         </Heading>
@@ -48,7 +51,7 @@ export const LoginPage: React.FC = () => {
         <Form onChange={() => setError('')} onSubmit={(event: any) => login((event as { value: ILoginForm }).value)}>
           <FormField name="email" label="Email" required={true} />
           <FormField name="password" label="Password" type="password" required={true} />
-          <Button className={LoginButton} type="submit" primary label="Login" />
+          <Button className={CenteredButton} type="submit" primary label="Login" />
         </Form>
       </div>
     </div>
