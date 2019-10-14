@@ -3,9 +3,10 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Page } from '../models/Page';
 import { AuthService, RestError } from './AuthService';
+import { API_URL } from './EvnService';
 
 const authService = AuthService.getInstance();
-const HOST = 'http://localhost:8083';
+
 
 export class PageService {
   private httpClient: RxJSHttpClient;
@@ -15,7 +16,7 @@ export class PageService {
   }
 
   getPages$(): Observable<Page[]> {
-    return this.httpClient.get(`${HOST}/pages`, { headers: authService.getAuthHeaders() }).pipe(
+    return this.httpClient.get(`${API_URL}/pages`, { headers: authService.getAuthHeaders() }).pipe(
       map((res: any) => {
         if (res.error) {
           throw new Error(res.message);
@@ -27,7 +28,7 @@ export class PageService {
   }
 
   getPage$(email: string): Observable<Page> {
-    return this.httpClient.get(`${HOST}/pages/${email}/`, { headers: authService.getAuthHeaders() }).pipe(
+    return this.httpClient.get(`${API_URL}/pages/${email}/`, { headers: authService.getAuthHeaders() }).pipe(
       map((res: any) => {
         if (res.error) {
           throw new Error(res.message);
@@ -39,16 +40,19 @@ export class PageService {
   }
 
   getAreasOfInterest$(): Observable<string[]> {
-    return this.httpClient.get(`${HOST}/areas-of-interest/`, { headers: authService.getAuthHeaders() });
+    return this.httpClient.get(`${API_URL}/areas-of-interest/`, { headers: authService.getAuthHeaders() });
   }
 
   updatePage$(page: Page): Observable<void> {
-    return this.httpClient.post(`${HOST}/pages`, { headers: { ...authService.getAuthHeaders(), ['Content-Type']: 'application/json' }, body: {...page} }).pipe(
-      map((res: { token: string } & RestError) => {
-        if (res.error) {
-          throw new Error(res.message);
-        }
-      })
-    );
+    return this.httpClient
+      // eslint-disable-next-line
+      .post(`${API_URL}/pages`, { headers: { ...authService.getAuthHeaders(), ['Content-Type']: 'application/json' }, body: { ...page } })
+      .pipe(
+        map((res: { token: string } & RestError) => {
+          if (res.error) {
+            throw new Error(res.message);
+          }
+        })
+      );
   }
 }

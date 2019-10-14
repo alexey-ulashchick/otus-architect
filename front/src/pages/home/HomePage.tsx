@@ -11,7 +11,6 @@ import { ListOfPages, Buttons } from './HomePageStyles';
 import { Link } from 'react-router-dom';
 
 const authService = AuthService.getInstance();
-const email = authService.getEmail();
 
 export const HomePage: React.FC = () => {
   const email = authService.getEmail();
@@ -32,7 +31,7 @@ export const HomePage: React.FC = () => {
         setLoading(false);
       }
     );
-  }, []);
+  }, [email]);
 
   return (
     <div>

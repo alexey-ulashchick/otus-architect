@@ -2,6 +2,7 @@ import { RxJSHttpClient } from 'rxjs-http-client';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import moment from 'moment';
+import { API_URL } from './EvnService';
 
 export interface RestError {
   message: string;
@@ -35,7 +36,7 @@ export class AuthService {
   }
 
   public login(email: string, password: string): Observable<void> {
-    return this.httpClient.post('http://localhost:8083/sign-in', { body: { email, password } }).pipe(
+    return this.httpClient.post(`${API_URL}/sign-in`, { body: { email, password } }).pipe(
       map((res: { token: string } & RestError) => {
         if (res.error) {
           throw new Error(res.message);
@@ -48,7 +49,7 @@ export class AuthService {
   }
 
   public signUp(email: string, password: string): Observable<void> {
-    return this.httpClient.post('http://localhost:8083/sign-up', { body: { email, password } }).pipe(
+    return this.httpClient.post(`${API_URL}//sign-up`, { body: { email, password } }).pipe(
       map((res: { email: string } & RestError) => {
         if (res.error) {
           throw new Error(res.message);
