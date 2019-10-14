@@ -15,7 +15,7 @@ interface PageViewRouteParams {
 
 type PageViewProps = RouteComponentProps<PageViewRouteParams>;
 
-const CloseButtonStyle = style({
+export const CloseButtonStyle = style({
   position: 'absolute',
   top: '1em',
   right: '1em',

@@ -40,7 +40,7 @@ export const CenteredButton = style({
 
 export const PageHeader = style(TILE, {
   padding: '1em',
-  textAlign: 'right',
+  // textAlign: 'right',
   maxWidth: MAX_WIDTH,
   borderTopLeftRadius: 0,
   borderTopRightRadius: 0,

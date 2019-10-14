@@ -4,10 +4,11 @@ import { Page } from '../../models/Page';
 import { PageService } from '../../services/PageService';
 import { Loader } from '../../components/Loader';
 import { ErrorMessage, PageHeader } from '../login/LoginPageStyles';
-import { Button } from 'grommet';
+import { Button, Box } from 'grommet';
 import { LogoutButton } from '../../components/LogoutButton';
 import { PageListItem } from '../../components/PageListItem';
-import { ListOfPages } from './HomePageStyles';
+import { ListOfPages, Buttons } from './HomePageStyles';
+import { Link } from 'react-router-dom';
 
 const authService = AuthService.getInstance();
 const email = authService.getEmail();
@@ -38,20 +39,30 @@ export const HomePage: React.FC = () => {
       {error ? <div className={ErrorMessage}>{error}</div> : ''}
       {self === null ? (
         <header className={PageHeader}>
-          <Button primary type="button" label="Create Page" />
+          <Link to="/page-edit">
+            <Button primary type="button" label="Create Page" />
+          </Link>
           <LogoutButton />
         </header>
       ) : (
         <header className={PageHeader}>
-          <div>
-            {self!.firstName} {self!.lastName}
-          </div>
-          <Button primary type="button" label="Edit Page" />
-          <LogoutButton />
+          <Box basis="full" direction="row">
+            <Box basis="1/2" justify="center">
+              {self!.firstName} {self!.lastName}
+            </Box>
+            <Box basis="1/2" direction="row" className={Buttons} justify="end">
+              <Link to="/page-edit">
+                <Button primary type="button" label="Edit Page" />
+              </Link>
+              <LogoutButton />
+            </Box>
+          </Box>
         </header>
       )}
       <main className={ListOfPages}>
-        {pages.map((page,index) => <PageListItem key={index} page={page}/>)}
+        {pages.map((page, index) => (
+          <PageListItem key={index} page={page} />
+        ))}
       </main>
     </div>
   );

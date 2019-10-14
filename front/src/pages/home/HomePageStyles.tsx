@@ -7,3 +7,12 @@ export const ListOfPages = style({
   maxWidth: MAX_WIDTH,
   padding: '1em',
 });
+
+export const Buttons = style({
+  textAlign: 'right',
+  $nest: {
+    '& > *': {
+      marginLeft: '1em'
+    }
+  }
+})

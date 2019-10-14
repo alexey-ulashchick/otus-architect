@@ -20,12 +20,14 @@ public class PageController {
   PageService pageService;
 
   @PostMapping(path = "/pages")
-  public void createPage(@RequestBody CreatePageRequest request, Principal principal) {
+  public CreatePageResponse createPage(@RequestBody CreatePageRequest request, Principal principal) {
     Page page = Page.builder().email(principal.getName()).firstName(request.getFirstName())
         .lastName(request.getLastName()).city(request.getCity()).gender(request.getGender()).age(request.getAge())
         .areasOfInterest(request.getAreasOfInterest()).build();
 
     pageService.createPage(page);
+
+    return CreatePageResponse.builder().build();
   }
 
   @GetMapping(path = "/pages")
@@ -36,6 +38,11 @@ public class PageController {
   @GetMapping(path = "/pages/{email}")
   public Page getPage(@PathVariable String email) {
     return pageService.getByEmail(email);
+  }
+
+  @GetMapping(path = "/areas-of-interest")
+  public List<String> getAreasOfInterest() {
+    return pageService.getAreasOfInterest();
   }
 
 }

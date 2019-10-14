@@ -7,6 +7,7 @@ import { HomePage } from './pages/home/HomePage';
 import { AuthService } from './services/AuthService';
 import { SignUpPage } from './pages/signup/SignUpPage';
 import { PageView } from './pages/page-view/PageView';
+import { PageEdit } from './pages/page-edit/PageEdit';
 
 const authService = AuthService.getInstance();
 
@@ -34,6 +35,7 @@ const App: React.FC = () => {
           <Route exact path="/sign-up" component={SignUpPage} />
           <PrivateRoute exact path="/" component={HomePage} />
           <PrivateRoute exact path="/page-view/:email/" component={PageView} />
+          <PrivateRoute exact path="/page-edit" component={PageEdit} />
         </BrowserRouter>
       </Box>
     </Grommet>

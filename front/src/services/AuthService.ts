@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import moment from 'moment';
 
-interface RestError {
+export interface RestError {
   message: string;
   error: string;
 }
@@ -27,7 +27,7 @@ export class AuthService {
   }
 
   private setEmail(email: string): void {
-    window.localStorage.setEmail('EMAIL', email);
+    window.localStorage.setItem('EMAIL', email);
   }
 
   public getEmail(): string | null {
