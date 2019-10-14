@@ -14,6 +14,7 @@ const authService = AuthService.getInstance();
 const email = authService.getEmail();
 
 export const HomePage: React.FC = () => {
+  const email = authService.getEmail();
   const [isLoading, setLoading]: [boolean, (Dispatch<SetStateAction<boolean>>)] = useState<boolean>(true);
   const [pages, setPage]: [Page[], (Dispatch<SetStateAction<Page[]>>)] = useState<Page[]>([]);
   const [error, setError]: [string, (Dispatch<SetStateAction<string>>)] = useState<string>('');
