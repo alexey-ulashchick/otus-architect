@@ -1,0 +1,42 @@
+version: '3.5'
+
+services:
+
+  my-mysql:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: my-mysql
+    image: my-mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      - database:/var/lib/mysql
+    restart: always
+
+  java-spring:
+    depends_on:
+      - my-mysql
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: java-spring
+    image: java-spring
+    ports:
+      - "8083:8083"
+    restart: always
+
+  nginx-react:
+    image: nginx-react
+    container_name: nginx-react
+    restart: always
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+
+volumes:
+  # jenkins_home:
+  # static:
+  database:
