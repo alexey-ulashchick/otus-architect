@@ -49,7 +49,7 @@ export class AuthService {
   }
 
   public signUp(email: string, password: string): Observable<void> {
-    return this.httpClient.post(`${API_URL}//sign-up`, { body: { email, password } }).pipe(
+    return this.httpClient.post(`${API_URL}/sign-up`, { body: { email, password } }).pipe(
       map((res: { email: string } & RestError) => {
         if (res.error) {
           throw new Error(res.message);
