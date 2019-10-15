@@ -22,8 +22,13 @@ Project page: <a href="http://otus.alexey.technology" target="_blank">http://otu
 - User is able to see detail about other user by choosing his/her personal page in the list
 
 ### Screenshots
+Login:
 ![login](https://raw.githubusercontent.com/alexey-ulashchick/otus-architect/master/doc/login.png)
-![home](https://raw.githubusercontent.com/alexey-ulashchick/otus-architect/master/doc/home.png)
+
+Home:
+![home](https://raw.githubusercontent.com/alexey-ulashchick/otus-architect/master/doc/home-page.png)
+
+Creating Page:
 ![page-edit](https://raw.githubusercontent.com/alexey-ulashchick/otus-architect/master/doc/page-edit.png)
 
 
