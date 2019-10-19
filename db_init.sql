@@ -44,3 +44,5 @@ insert into
   otus_dev.areasOfInterest (areaOfInterest)
 values
   ('Travelling');
+ALTER USER root IDENTIFIED WITH mysql_native_password BY 'dockerinternal';
+flush PRIVILEGES;
