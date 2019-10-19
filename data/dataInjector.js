@@ -52,7 +52,12 @@ const insertData = () => {
 };
 console.log('Cleaning up database.');
 
-connection.query('DELETE FROM users;', () => {
+connection.query('DELETE FROM users;', (err) => {
+  if (err) {
+    console.error(err);
+    process.exit(1);
+  }
+
   console.log('Previous users deleted');
   const lr = new LineByLineReader('data.csv');
 
