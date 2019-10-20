@@ -1,4 +1,4 @@
-import React, { useState, Dispatch, SetStateAction, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, Dispatch, SetStateAction, useEffect, useMemo } from 'react';
 import { AuthService } from '../../services/AuthService';
 import { Page } from '../../models/Page';
 import { PageService } from '../../services/PageService';
@@ -41,6 +41,11 @@ export const HomePage: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    pageService.getPage$(email!).subscribe(
+      page => setSelf(page),
+      err => setError(err)
+    );
+
     pageService.getPages$('', 0).subscribe(
       newPages => {
         setPage([...newPages].filter(page => page.email !== email));
@@ -98,8 +103,7 @@ export const HomePage: React.FC = () => {
             items={pages}
             step={100}
             onMore={() => {
-              pageService.getPages$(filter, pages.length)
-                .subscribe(newPages => setPage([...pages, ...newPages]), error => setError(error))
+              pageService.getPages$(filter, pages.length).subscribe(newPages => setPage([...pages, ...newPages]), error => setError(error));
             }}
           >
             {(page, index) => <PageListItem key={index} page={page} />}
