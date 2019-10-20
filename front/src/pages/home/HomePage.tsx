@@ -1,16 +1,22 @@
-import React, { useState, Dispatch, SetStateAction, useEffect } from 'react';
+import React, { useState, Dispatch, SetStateAction, useEffect, useCallback, useMemo } from 'react';
 import { AuthService } from '../../services/AuthService';
 import { Page } from '../../models/Page';
 import { PageService } from '../../services/PageService';
 import { Loader } from '../../components/Loader';
 import { ErrorMessage, PageHeader } from '../login/LoginPageStyles';
-import { Button, Box } from 'grommet';
+import { Button, Box, InfiniteScroll, TextInput } from 'grommet';
 import { LogoutButton } from '../../components/LogoutButton';
 import { PageListItem } from '../../components/PageListItem';
-import { ListOfPages, Buttons } from './HomePageStyles';
+import { ListOfPages, Buttons, HomePageBody, SearchForm, InfinityScrollContainer, SearchTextInput, SearchIcon } from './HomePageStyles';
 import { Link } from 'react-router-dom';
+import { Search } from 'grommet-icons';
+import { BehaviorSubject } from 'rxjs';
+import { throttleTime, debounceTime, switchMap } from 'rxjs/operators';
 
 const authService = AuthService.getInstance();
+const pageService = new PageService();
+
+const filter$ = new BehaviorSubject('');
 
 export const HomePage: React.FC = () => {
   const email = authService.getEmail();
@@ -18,12 +24,27 @@ export const HomePage: React.FC = () => {
   const [pages, setPage]: [Page[], (Dispatch<SetStateAction<Page[]>>)] = useState<Page[]>([]);
   const [error, setError]: [string, (Dispatch<SetStateAction<string>>)] = useState<string>('');
   const [self, setSelf]: [Page | null, (Dispatch<SetStateAction<Page | null>>)] = useState<Page | null>(null);
+  const [filter, setFilter]: [string, (Dispatch<SetStateAction<string>>)] = useState<string>('');
+
+  useMemo(() => {
+    filter$.pipe(throttleTime(500)).subscribe(() => setLoading(true));
+
+    filter$
+      .pipe(
+        debounceTime(500),
+        switchMap(value => pageService.getPages$(value, 0))
+      )
+      .subscribe(pages => {
+        setLoading(false);
+        setPage(pages);
+      });
+  }, []);
 
   useEffect(() => {
-    new PageService().getPages$().subscribe(
-      pages => {
-        setPage(pages.filter(page => page.email !== email));
-        setSelf(pages.find(page => page.email === email) || null);
+    pageService.getPages$('', 0).subscribe(
+      newPages => {
+        setPage([...newPages].filter(page => page.email !== email));
+        // setSelf(pages.find(page => page.email === email) || null);
         setLoading(false);
       },
       (err: Error) => {
@@ -34,8 +55,7 @@ export const HomePage: React.FC = () => {
   }, [email]);
 
   return (
-    <div>
-      {isLoading ? <Loader /> : ''}
+    <div className={HomePageBody}>
       {error ? <div className={ErrorMessage}>{error}</div> : ''}
       {self === null ? (
         <header className={PageHeader}>
@@ -59,10 +79,32 @@ export const HomePage: React.FC = () => {
           </Box>
         </header>
       )}
+      <div className={SearchForm}>
+        <TextInput
+          className={SearchTextInput}
+          prefix={'sd'}
+          value={filter}
+          onChange={event => {
+            setFilter(event.target.value);
+            filter$.next(event.target.value);
+          }}
+        />
+        <Search className={SearchIcon} />
+      </div>
       <main className={ListOfPages}>
-        {pages.map((page, index) => (
-          <PageListItem key={index} page={page} />
-        ))}
+        {isLoading ? <Loader /> : ''}
+        <div className={InfinityScrollContainer}>
+          <InfiniteScroll
+            items={pages}
+            step={100}
+            onMore={() => {
+              pageService.getPages$(filter, pages.length)
+                .subscribe(newPages => setPage([...pages, ...newPages]), error => setError(error))
+            }}
+          >
+            {(page, index) => <PageListItem key={index} page={page} />}
+          </InfiniteScroll>
+        </div>
       </main>
     </div>
   );

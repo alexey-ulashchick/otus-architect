@@ -15,8 +15,8 @@ export class PageService {
     this.httpClient = new RxJSHttpClient();
   }
 
-  getPages$(): Observable<Page[]> {
-    return this.httpClient.get(`${API_URL}/pages`, { headers: authService.getAuthHeaders() }).pipe(
+  getPages$(query: string, offset: number): Observable<Page[]> {
+    return this.httpClient.get(`${API_URL}/pages?query=${query}&offset=${offset}`, { headers: authService.getAuthHeaders() }).pipe(
       map((res: any) => {
         if (res.error) {
           throw new Error(res.message);

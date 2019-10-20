@@ -10,7 +10,7 @@ export const TILE = {
   borderRadius: '1em'
 };
 
-const WIDTH = '30em';
+export const WIDTH = '30em';
 export const MAX_WIDTH = '80em';
 
 export const LoginPageStyle = style({
@@ -30,7 +30,7 @@ export const FormStyle = style(TILE, {
   flexDirection: 'column',
   padding: '2em',
   boxSizing: 'border-box',
-  position: 'relative',
+  position: 'relative'
 });
 
 export const CenteredButton = style({
@@ -40,7 +40,7 @@ export const CenteredButton = style({
 
 export const PageHeader = style(TILE, {
   padding: '1em',
-  // textAlign: 'right',
+  boxSizing: 'border-box',
   maxWidth: MAX_WIDTH,
   borderTopLeftRadius: 0,
   borderTopRightRadius: 0,
