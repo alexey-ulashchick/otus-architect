@@ -15,8 +15,8 @@ export class PageService {
     this.httpClient = new RxJSHttpClient();
   }
 
-  getPages$(query: string, offset: number): Observable<Page[]> {
-    return this.httpClient.get(`${API_URL}/pages?query=${query}&offset=${offset}`, { headers: authService.getAuthHeaders() }).pipe(
+  getPages$(query: string): Observable<Page[]> {
+    return this.httpClient.get(`${API_URL}/pages?query=${query}`, { headers: authService.getAuthHeaders() }).pipe(
       map((res: any) => {
         if (res.error) {
           throw new Error(res.message);
@@ -27,10 +27,14 @@ export class PageService {
     );
   }
 
-  getPage$(email: string): Observable<Page> {
+  getPage$(email: string): Observable<Page|null> {
     return this.httpClient.get(`${API_URL}/pages/${email}/`, { headers: authService.getAuthHeaders() }).pipe(
       map((res: any) => {
+        if (res.error && res.exception.indexOf('NoSuchElement') !== -1) {
+          return null;
+        }
         if (res.error) {
+          debugger;
           throw new Error(res.message);
         }
 
