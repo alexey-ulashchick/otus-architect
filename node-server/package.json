@@ -1,0 +1,34 @@
+{
+  "name": "node-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run tsc",
+    "coverage": "npm run test-cov && npm run test-remap",
+    "debug": "node $NODE_DEBUG_OPTION ./build/index.js",
+    "cluster-debug": "node $NODE_DEBUG_OPTION ./build/cluster.js",
+    "postinstall": "npm run build",
+    "tslint": "tslint ./*.ts ./lib/*.ts",
+    "test": "mocha --reporter spec --check-leaks --bail test/",
+    "tsc": "tsc --project tsconfig.json",
+    "start": "node ./build/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/body-parser": "^1.17.1",
+    "@types/express": "^4.17.1",
+    "typescript": "^3.6.3"
+  },
+  "dependencies": {
+    "@tsed/common": "5.31.3",
+    "@tsed/core": "5.31.3",
+    "@tsed/di": "5.31.3",
+    "@types/mysql": "^2.15.7",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "moment": "^2.24.0",
+    "mysql": "^2.17.1"
+  }
+}
