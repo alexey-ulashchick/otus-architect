@@ -41,6 +41,4 @@ services:
       - "80:80"
 
 volumes:
-  # jenkins_home:
-  # static:
   database:
