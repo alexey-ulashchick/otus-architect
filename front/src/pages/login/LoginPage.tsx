@@ -23,7 +23,7 @@ export const LoginPage: React.FC = () => {
 
   const login = (value: ILoginForm) => {
     setLoading(true);
-    authService.login(value.email, value.password).subscribe(
+    authService.login(value.email.trim(), value.password.trim()).subscribe(
       () => {
         setLoading(false);
       },
