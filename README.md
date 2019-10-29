@@ -1,19 +1,44 @@
 # OTUS: High Load Architecture class.
 Project page: <a href="http://otus.alexey.technology" target="_blank">http://otus.alexey.technology</a>
 
-## Techonology stack
+## HomeWork #2.
+- Data genarated and injectd with NodeJS scripts. Folder /data contains all realted logic and appropriate dataset.
+- Query for the search functionallity (email is PK):
+```sql
+  (select email, firstName, lastName, city from pages where firstName like ? limit 1000)
+     union
+  (select email, firstName, lastName, city from pages where lastName like ? limit 1000)
+     limit 1000;
+```
+- Sorting by id (email) is implemented at application level
+- Indexes for search optimization:
+```sql
+create index pages_firstName_email_lastName_city_index
+  on pages (firstName, email, lastName, city);
+```
+```sql
+create index pages_lastName_email_firstName_city_index
+  on pages (lastName, email, firstName, city);
+```
+- Explain after applying indexes:
+![explain](https://raw.githubusercontent.com/alexey-ulashchick/otus-architect/master/doc/explain.png)
+
+- Latency, Throgthput charts:
+![performance-charts](https://raw.githubusercontent.com/alexey-ulashchick/otus-architect/master/doc/performance-charts.png)
+
+## HomeWork #1.
+### Techonology stack
 - Backend: Java Spring stack: Spring Boot/Spring MVC/Spring Security
 - Frontend: SPA via React & Grommet
 - Database: MySQL
 
-## Keynotes
+### Keynotes
 - Authorization through JWT Tokens
 - Deployment via docker images and docker-compose. Nginx for handling incoming requests.
 - Database initialization in db_init.sql
 - Database schema:
 ![Database Schema](https://raw.githubusercontent.com/alexey-ulashchick/otus-architect/master/doc/data-diagram.png)
 
-## HomeWork #1.
 ### Functional/Features realization:
 - Registration is available through SignUp button via email & password
 - Login is using email & password from default page

@@ -7,7 +7,7 @@ import { ErrorMessage, FormStyle, Header } from '../login/LoginPageStyles';
 import { Heading, Table, TableBody, TableRow, TableCell, Button } from 'grommet';
 import { Close } from 'grommet-icons';
 import { style } from 'typestyle';
-import { delay } from 'rxjs/operators';
+import { delay, filter } from 'rxjs/operators';
 
 interface PageViewRouteParams {
   email: string;
@@ -27,9 +27,9 @@ export const PageView = withRouter((props: PageViewProps) => {
   const [error, setError]: [string, (Dispatch<SetStateAction<string>>)] = useState<string>('');
 
   useEffect(() => {
-    new PageService().getPage$(props.match.params.email).pipe(delay(500)).subscribe(
-      (page: Page) => {
-        setPage(page);
+    new PageService().getPage$(props.match.params.email).pipe(delay(500), filter(page => page !== null)).subscribe(
+      (page: Page | null) => {
+        setPage(page!);
         setLoading(false);
       },
       (err: Error) => {
@@ -49,7 +49,7 @@ export const PageView = withRouter((props: PageViewProps) => {
             Page
           </Heading>
           <Link to="/" className={CloseButtonStyle}>
-            <Button icon={<Close />}/>
+            <Button icon={<Close />} />
           </Link>
           <Table>
             <TableBody>
@@ -100,8 +100,8 @@ export const PageView = withRouter((props: PageViewProps) => {
           </Table>
         </div>
       ) : (
-        ''
-      )}
+          ''
+        )}
     </div>
   );
 });

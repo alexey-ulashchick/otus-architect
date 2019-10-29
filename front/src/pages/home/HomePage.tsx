@@ -4,7 +4,7 @@ import { Page } from '../../models/Page';
 import { PageService } from '../../services/PageService';
 import { Loader } from '../../components/Loader';
 import { ErrorMessage, PageHeader } from '../login/LoginPageStyles';
-import { Button, Box, InfiniteScroll, TextInput } from 'grommet';
+import { Button, Box, TextInput } from 'grommet';
 import { LogoutButton } from '../../components/LogoutButton';
 import { PageListItem } from '../../components/PageListItem';
 import { ListOfPages, Buttons, HomePageBody, SearchForm, InfinityScrollContainer, SearchTextInput, SearchIcon } from './HomePageStyles';
@@ -32,7 +32,7 @@ export const HomePage: React.FC = () => {
     filter$
       .pipe(
         debounceTime(500),
-        switchMap(value => pageService.getPages$(value, 0))
+        switchMap(value => pageService.getPages$(value))
       )
       .subscribe(pages => {
         setLoading(false);
@@ -41,15 +41,12 @@ export const HomePage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    pageService.getPage$(email!).subscribe(
-      page => setSelf(page),
-      err => setError(err)
-    );
+    pageService.getPage$(email!)
+      .subscribe(page => setSelf(page), err => setError(err));
 
-    pageService.getPages$('', 0).subscribe(
+    pageService.getPages$('').subscribe(
       newPages => {
-        setPage([...newPages].filter(page => page.email !== email));
-        // setSelf(pages.find(page => page.email === email) || null);
+        setPage(newPages.filter(page => page.email !== email));
         setLoading(false);
       },
       (err: Error) => {
@@ -70,20 +67,20 @@ export const HomePage: React.FC = () => {
           <LogoutButton />
         </header>
       ) : (
-        <header className={PageHeader}>
-          <Box basis="full" direction="row">
-            <Box basis="1/2" justify="center">
-              {self!.firstName} {self!.lastName}
+          <header className={PageHeader}>
+            <Box basis="full" direction="row">
+              <Box basis="1/2" justify="center">
+                {self!.firstName} {self!.lastName}
+              </Box>
+              <Box basis="1/2" direction="row" className={Buttons} justify="end">
+                <Link to="/page-edit">
+                  <Button primary type="button" label="Edit Page" />
+                </Link>
+                <LogoutButton />
+              </Box>
             </Box>
-            <Box basis="1/2" direction="row" className={Buttons} justify="end">
-              <Link to="/page-edit">
-                <Button primary type="button" label="Edit Page" />
-              </Link>
-              <LogoutButton />
-            </Box>
-          </Box>
-        </header>
-      )}
+          </header>
+        )}
       <div className={SearchForm}>
         <TextInput
           className={SearchTextInput}
@@ -99,15 +96,7 @@ export const HomePage: React.FC = () => {
       <main className={ListOfPages}>
         {isLoading ? <Loader /> : ''}
         <div className={InfinityScrollContainer}>
-          <InfiniteScroll
-            items={pages}
-            step={100}
-            onMore={() => {
-              pageService.getPages$(filter, pages.length).subscribe(newPages => setPage([...pages, ...newPages]), error => setError(error));
-            }}
-          >
-            {(page, index) => <PageListItem key={index} page={page} />}
-          </InfiniteScroll>
+          {pages.map((page, index) => <PageListItem key={index} page={page} />)}
         </div>
       </main>
     </div>
