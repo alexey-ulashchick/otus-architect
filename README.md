@@ -17,8 +17,8 @@ create index pages_firstName_email_lastName_city_index
   on pages (firstName, email, lastName, city);
 ```
 ```sql
-create index pages_firstName_email_lastName_city_index
-  on pages (firstName, email, lastName, city);
+create index pages_lastName_email_firstName_city_index
+  on pages (lastName, email, firstName, city);
 ```
 - Explain after applying indexes:
 ![explain](https://raw.githubusercontent.com/alexey-ulashchick/otus-architect/master/doc/explain.png)
