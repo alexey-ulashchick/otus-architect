@@ -5,6 +5,7 @@ const pad = require('string-padding');
 
 const connection = mysql.createConnection({
   host: 'localhost',
+  port: '4406',
   user: 'root',
   password: 'dockerinternal',
   database: 'otus_dev'

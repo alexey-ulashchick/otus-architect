@@ -2,24 +2,44 @@ version: '3.5'
 
 services:
 
-  my-mysql:
+  mysql-master:
     build:
-      context: .
+      context: ./mysql-cluster/master
       dockerfile: Dockerfile
-    container_name: my-mysql
-    image: my-mysql
+    container_name: mysql-master
+    expose:
+      - "3306"
     ports:
-      - "3306:3306"
-    volumes:
-      - database:/var/lib/mysql
-    restart: always
+      - "4406:3306"
     security_opt:
       - seccomp:unconfined
-    command: ['--max_connections=1000']
+    volumes:
+      - mysql-master:/var/lib/mysql/
+      - ./mysql-cluster/master:/etc/mysql/conf.d/
+    restart: always
+
+  mysql-slave:
+    build:
+      context: ./mysql-cluster/slave
+      dockerfile: Dockerfile
+    container_name: mysql-slave
+    expose:
+      - "3306"
+    ports:
+      - "4407:3306"
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - mysql-slave:/var/lib/mysql/
+      - ./mysql-cluster/slave:/etc/mysql/conf.d/
+    restart: always
+    depends_on:
+      - mysql-master
 
   java-spring:
     depends_on:
-      - my-mysql
+      - mysql-master
+      - mysql-slave
     build:
       context: ./server
       dockerfile: Dockerfile
@@ -65,6 +85,7 @@ services:
 
   grafana:
     image: grafana/grafana:3.0.0-beta7
+    container_name: grafana
     environment:
         - GF_SECURITY_ADMIN_PASSWORD=pass
     depends_on:
@@ -78,3 +99,5 @@ volumes:
   database:
   grafana_data:
   prometheus_data:
+  mysql-master:
+  mysql-slave:
