@@ -1,7 +1,6 @@
 package com.java.otus.architect.page;
 
 import java.security.Principal;
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,7 @@ public class PageController {
   @GetMapping(path = "/pages")
   public List<PartialPage> getPages(@RequestParam(required = false, defaultValue = "") String query) {
     List<PartialPage> partialPages =  pageService.getAll(query);
-    Collections.sort(partialPages, (a,b) -> a.getEmail().compareTo(b.getEmail()));
+    // Collections.sort(partialPages, (a,b) -> a.getEmail().compareTo(b.getEmail()));
 
     return partialPages;
   }

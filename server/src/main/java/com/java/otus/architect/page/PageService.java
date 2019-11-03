@@ -18,8 +18,8 @@ public class PageService {
   private final static String DELETE_USERS_AREAS_OF_INTEREST = "delete from users_areasOfInterest where email = ?";
   private final static String INSERT_PAGE = "insert into pages (`email`, `firstName`, `lastName`, `city`, `gender`, `age`) values (?,?,?,?,?,?)";
   private final static String INSERT_USER_AREA_OF_INTEREST = "insert into users_areasOfInterest (`email`, `areaOfInterest`) value (?,?)";
-  // private final static String SELECT_PAGES = "(select email, firstName, lastName, city from pages where firstName like ? limit 1000) union (select email, firstName, lastName, city from pages where lastName like ? limit 1000) limit 1000";
-  private final static String SELECT_PAGES = "select email, firstName, lastName, city from pages where firstName like ? or lastName like ? limit 1000";
+  private final static String SELECT_PAGES = "(select email, firstName, lastName, city from pages where firstName like ? limit 1000) union (select email, firstName, lastName, city from pages where lastName like ? limit 1000) order by email limit 1000";
+  // private final static String SELECT_PAGES = "select email, firstName, lastName, city from pages where firstName like ? or lastName like ? limit 1000";
   private final static String SELECT_BY_EMAIL = "select * from pages left join users_areasOfInterest on pages.email = users_areasOfInterest.email where pages.email = ?";
   private final static String SELECT_AREAS_OF_INTERES = "select * from areasOfInterest";
 
