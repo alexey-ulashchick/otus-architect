@@ -44,6 +44,7 @@ public class PageService {
     jdbcTemplate.update(INSERT_PAGE, args);
   }
 
+  @Transactional(readOnly = true)
   public List<PartialPage> getAll(String query) {
     return jdbcTemplate.query(SELECT_PAGES, new Object[] { query + '%', query + '%' },
         new PartialRowMapper());
