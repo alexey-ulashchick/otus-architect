@@ -1,6 +1,16 @@
 # OTUS: High Load Architecture class.
 Project page: <a href="http://otus.alexey.technology" target="_blank">http://otus.alexey.technology</a>
 
+## HomeWork #3.
+- Replication schema is MASTER / 2 SLAVES
+- Metrics collection: cAdviser + Prometheus + Grafana
+- Requests redirected to slaves: auth + search query
+- Latency / througthput didn't change a lot since same single phisical VPS instance is used
+- Metrics before redirecting reads:
+![explain](https://raw.githubusercontent.com/alexey-ulashchick/otus-architect/master/doc/master-only.png)
+- Metrics after redirecting reads:
+![explain](https://raw.githubusercontent.com/alexey-ulashchick/otus-architect/master/doc/read-from-slaves.png)
+
 ## HomeWork #2.
 - Data genarated and injectd with NodeJS scripts. Folder /data contains all realted logic and appropriate dataset.
 - Query for the search functionallity (email is PK):
