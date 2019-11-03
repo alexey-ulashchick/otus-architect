@@ -1,0 +1,8 @@
+scrape_configs:
+- job_name: cadvisor
+  scrape_interval: 5s
+  static_configs:
+  - targets:
+    - cadvisor:8080
+
+# sum by (name) (rate(container_cpu_usage_seconds_total{name=~"my-mysql|java-spring|nginx-react"}[10s]))
