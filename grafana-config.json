@@ -53,7 +53,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(container_cpu_usage_seconds_total{name=~\"my-mysql|java-spring|nginx-react|mysql-master|mysql-slave\"}[10s])) by (name) * (100 )",
+              "expr": "sum(rate(container_cpu_usage_seconds_total{name=~\"my-mysql|java-spring|nginx-react|mysql-master|mysql-slave-1|mysql-slave-2\"}[10s])) by (name) * (100 )",
               "hide": false,
               "interval": "",
               "intervalFactor": 2,
@@ -137,7 +137,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(container_memory_rss{name=~\"my-mysql|java-spring|nginx-react|mysql-master|mysql-slave\"}) by (name)",
+              "expr": "sum(container_memory_rss{name=~\"my-mysql|java-spring|nginx-react|mysql-master|mysql-slave-1|mysql-slave-2\"}) by (name)",
               "hide": false,
               "intervalFactor": 2,
               "legendFormat": "{{name}}",
@@ -241,7 +241,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(container_network_receive_bytes_total{name=~\"my-mysql|java-spring|nginx-react|mysql-master|mysql-slave\"}[10s])) by (name)",
+              "expr": "sum(rate(container_network_receive_bytes_total{name=~\"my-mysql|java-spring|nginx-react|mysql-master|mysql-slave-1|mysql-slave-2\"}[10s])) by (name)",
               "intervalFactor": 2,
               "legendFormat": "{{name}}",
               "refId": "A",
@@ -326,7 +326,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(container_network_transmit_bytes_total{name=~\"my-mysql|java-spring|nginx-react|mysql-master|mysql-slave\"}[10s])) by (name)",
+              "expr": "sum(rate(container_network_transmit_bytes_total{name=~\"my-mysql|java-spring|nginx-react|mysql-master|mysql-slave-1|mysql-slave-2\"}[10s])) by (name)",
               "intervalFactor": 2,
               "legendFormat": "{{name}}",
               "refId": "A",
@@ -422,7 +422,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(container_fs_reads_total{name=~\"my-mysql|java-spring|nginx-react|mysql-master|mysql-slave\"}[10s])) by (name) / (1024*1024)",
+              "expr": "sum(rate(container_fs_reads_total{name=~\"my-mysql|java-spring|nginx-react|mysql-master|mysql-slave-1|mysql-slave-2\"}[10s])) by (name) / (1024*1024)",
               "hide": false,
               "interval": "",
               "intervalFactor": 2,
@@ -506,7 +506,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(container_fs_writes_bytes_total{name=~\"my-mysql|java-spring|nginx-react|mysql-master|mysql-slave\"}[10s])) by (name) / (1024*1024)",
+              "expr": "sum(rate(container_fs_writes_bytes_total{name=~\"my-mysql|java-spring|nginx-react|mysql-master|mysql-slave-1|mysql-slave-2\"}[10s])) by (name) / (1024*1024)",
               "hide": false,
               "interval": "1s",
               "intervalFactor": 2,
@@ -590,7 +590,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(container_memory_swap{name=~\"my-mysql|java-spring|nginx-react|mysql-master|mysql-slave\"}) by (name)",
+              "expr": "sum(container_memory_swap{name=~\"my-mysql|java-spring|nginx-react|mysql-master|mysql-slave-1|mysql-slave-2\"}) by (name)",
               "hide": false,
               "intervalFactor": 2,
               "legendFormat": "{{name}}",
@@ -652,8 +652,8 @@
     }
   ],
   "time": {
-    "from": "2019-11-03T05:58:12.449Z",
-    "to": "2019-11-03T06:01:20.096Z"
+    "from": "now-5m",
+    "to": "now"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -686,8 +686,8 @@
   "annotations": {
     "list": []
   },
-  "refresh": false,
+  "refresh": "5s",
   "schemaVersion": 12,
-  "version": 18,
+  "version": 19,
   "links": []
 }

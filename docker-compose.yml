@@ -18,11 +18,11 @@ services:
       - ./mysql-cluster/master:/etc/mysql/conf.d/
     restart: always
 
-  mysql-slave:
+  mysql-slave-1:
     build:
-      context: ./mysql-cluster/slave
+      context: ./mysql-cluster/slave-1
       dockerfile: Dockerfile
-    container_name: mysql-slave
+    container_name: mysql-slave-1
     expose:
       - "3306"
     ports:
@@ -30,8 +30,26 @@ services:
     security_opt:
       - seccomp:unconfined
     volumes:
-      - mysql-slave:/var/lib/mysql/
-      - ./mysql-cluster/slave:/etc/mysql/conf.d/
+      - mysql-slave-1:/var/lib/mysql/
+      - ./mysql-cluster/slave-1:/etc/mysql/conf.d/
+    restart: always
+    depends_on:
+      - mysql-master
+
+  mysql-slave-2:
+    build:
+      context: ./mysql-cluster/slave-2
+      dockerfile: Dockerfile
+    container_name: mysql-slave-2
+    expose:
+      - "3306"
+    ports:
+      - "4408:3306"
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - mysql-slave-2:/var/lib/mysql/
+      - ./mysql-cluster/slave-2:/etc/mysql/conf.d/
     restart: always
     depends_on:
       - mysql-master
@@ -39,7 +57,8 @@ services:
   java-spring:
     depends_on:
       - mysql-master
-      - mysql-slave
+      - mysql-slave-1
+      - mysql-slave-2
     build:
       context: ./server
       dockerfile: Dockerfile
@@ -100,4 +119,5 @@ volumes:
   grafana_data:
   prometheus_data:
   mysql-master:
-  mysql-slave:
+  mysql-slave-1:
+  mysql-slave-2:
