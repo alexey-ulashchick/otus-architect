@@ -39,15 +39,17 @@ const insertData = () => {
     connection.query(insertUser, error => {
       if (error) return reject(error);
 
-      connection.query(insertPage, error => {
-        if (error) return reject(error);
+      return resolve();
 
-        connection.query(insertInterests, error => {
-          if (error) return reject(error);
+      // connection.query(insertPage, error => {
+      //   if (error) return reject(error);
 
-          return resolve();
-        });
-      });
+      //   connection.query(insertInterests, error => {
+      //     if (error) return reject(error);
+
+      //
+      //   });
+      // });
     });
   });
 };
@@ -80,7 +82,7 @@ connection.query('DELETE FROM users;', (err) => {
     buffer.push({ email, firstName, lastName, city, age, gender, userInterests });
     line++;
 
-    if (buffer.length === 1000) {
+    if (buffer.length === 10) {
       lr.pause();
 
       insertData().then(() => {
