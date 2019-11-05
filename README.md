@@ -1,6 +1,34 @@
 # OTUS: High Load Architecture class.
 Project page: <a href="http://otus.alexey.technology" target="_blank">http://otus.alexey.technology</a>
 
+## HomeWork #4.
+
+### Setup:
+1. Setup 1 MS + 2SL replication. Using docker-compose: [docker-compose](https://github.com/alexey-ulashchick/otus-architect/blob/master/docker-compose.yml).
+2. Enable row-based replication and GTID. Node configs: [node1](https://github.com/alexey-ulashchick/otus-architect/blob/master/mysql-cluster/master/master.cnf), [node2](https://github.com/alexey-ulashchick/otus-architect/blob/master/mysql-cluster/slave-1/slave.cnf), [node3](https://github.com/alexey-ulashchick/otus-architect/blob/master/mysql-cluster/slave-2/slave.cnf).
+3. Starting docker-compose. Replication is kicked by init sql scripts (node-1-init node-2-init, node-3-init).
+
+### At this point:
+- Cluster is up and running
+- DB otus_dev, which is part of master initialization script, appears on slave-1 & slave-2 as a result of working replication
+
+### Testing:
+1. Reusing script from HW2 for users generation to create write load [dataInject.js](https://github.com/alexey-ulashchick/otus-architect/blob/master/data/dataInjector.js).
+2. Killing master with ```docker kill mysql-master```.
+3. Script throws exception and quits. Last confirmed write: ```Inserted 17250 from 1000000```.
+4. Checking both slaves with ```SHOW SLAVE STATUS;``` and trying to to find most updated slave. In our case both of them have the latest data by checking ```exec_master_log_pos```.
+5. Promoting slave to become a new master by running on *slave-1*:
+```
+STOP SLAVE;
+RESET SLAVE ALL;
+
+CHANGE MASTER TO MASTER_HOST='mysql-slave-1', MASTER_PORT=3306, MASTER_USER='repl', MASTER_PASSWORD='dockerinternal', MASTER_AUTO_POSITION=1;
+START SLAVE;
+```
+6. Repeat SQL code from step-5 on *slave-2*:
+7. Proceed with execution of data injector to make sure than new replication model works.
+
+
 ## HomeWork #3.
 - Replication schema is MASTER / 2 SLAVES
 - Metrics collection: cAdviser + Prometheus + Grafana
